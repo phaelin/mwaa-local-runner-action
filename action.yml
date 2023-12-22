@@ -1,0 +1,50 @@
+name: 'MWAA Local Runner'
+description: 'Generates an ephemeral MWAA environment within GitHub Actions'
+author: 'Chris Horne'
+
+# Define your inputs here.
+inputs:
+  up:
+    description: 'whether to run docker-compose up'
+    required: true
+    default: 'false'
+  # down: tear down docker-compose env
+  down:
+    description: 'whether to run docker-compose down'
+    required: true
+    default: 'false'
+  exec: # this one needs to be able to execute whatever dbt stuff they have
+    description: 'whether to run docker-compose exec'
+    required: true
+    default: 'false'
+  exec-command:
+    description: 'command to run in docker-compose exec'
+    required: false
+    default: 'airflow'
+
+# Define your outputs here.
+# outputs:
+
+runs:
+  using: composite
+  steps:
+    - name: Run docker-compose up
+      shell: bash
+      run: |
+        if [[ "${{ inputs.up }}" == "true" ]]; then
+          docker-compose up -d
+        fi
+    - name: Run docker-compose down
+      shell: bash
+      run: |
+        if [[ "${{ inputs.down }}" == "true" ]]; then
+          docker-compose down
+        fi
+    - name: Run docker-compose exec
+      shell: bash
+      run: |
+        if [[ "${{ inputs.exec }}" == "true" ]]; then
+          docker-compose exec -T airflow ${{ inputs.exec-command }}
+        fi
+
+
