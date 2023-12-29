@@ -31,6 +31,7 @@ runs:
   using: composite
   steps:
     - name: Checkout aws-mwaa-local-runner
+      if: inputs.up == 'true'
       uses: actions/checkout@v4
       with:
         repository: aws/aws-mwaa-local-runner
