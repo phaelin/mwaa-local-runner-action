@@ -54,6 +54,7 @@ runs:
     - name: Run docker-compose exec
       if: inputs.exec == true
       shell: bash
-      run: docker-compose exec -T local-runner bash -c '${{ inputs.exec-command }}''
+      run: |
+        docker-compose exec -T local-runner bash -c '${{ inputs.exec-command }}'' >> $GITHUB_STEP_SUMMARY
 
 
