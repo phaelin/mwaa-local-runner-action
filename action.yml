@@ -6,16 +6,16 @@ author: 'Chris Horne'
 inputs:
   up:
     description: 'whether to run docker-compose up'
-    required: true
+    required: false
     default: 'false'
   # down: tear down docker-compose env
   down:
     description: 'whether to run docker-compose down'
-    required: true
+    required: false
     default: 'false'
   exec: # this one needs to be able to execute whatever dbt stuff they have
     description: 'whether to run docker-compose exec'
-    required: true
+    required: false
     default: 'false'
   exec-command:
     description: 'command to run in docker-compose exec'
@@ -28,23 +28,23 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Checkout aws-mwaa-local-runner
+      uses: actions/checkout@v4
+      with:
+        repository: aws/aws-mwaa-local-runner
+        path: aws-mwaa-local-runner
     - name: Run docker-compose up
+      if: inputs.up == true
       shell: bash
-      run: |
-        if [[ "${{ inputs.up }}" == "true" ]]; then
-          docker-compose up -d
-        fi
+      working-directory: aws-mwaa-local-runner/docker/
+      run: docker-compose -f ./docker-compose-local.yml up -d
     - name: Run docker-compose down
+      if: inputs.down == true
       shell: bash
-      run: |
-        if [[ "${{ inputs.down }}" == "true" ]]; then
-          docker-compose down
-        fi
+      run: docker-compose down
     - name: Run docker-compose exec
+      if: inputs.exec == true
       shell: bash
-      run: |
-        if [[ "${{ inputs.exec }}" == "true" ]]; then
-          docker-compose exec -T airflow ${{ inputs.exec-command }}
-        fi
+      run: docker-compose exec -T airflow ${{ inputs.exec-command }}
 
 
