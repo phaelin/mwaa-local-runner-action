@@ -61,12 +61,14 @@ runs:
     - name: Run docker-compose down
       if: inputs.down == 'true'
       shell: bash
-      run: docker-compose down
+      working-directory: aws-mwaa-local-runner/docker/
+      run: docker-compose -f ./docker-compose-local.ymldown
 
     - name: Run docker-compose exec
       if: inputs.exec == 'true'
       shell: bash
+      working-directory: aws-mwaa-local-runner/docker/
       run: |
-        docker-compose exec -T local-runner bash -c '${{ inputs.exec-command }}' >> $GITHUB_STEP_SUMMARY
+        docker-compose -f ./docker-compose-local.yml exec -T local-runner bash -c '${{ inputs.exec-command }}' >> $GITHUB_STEP_SUMMARY
 
 
