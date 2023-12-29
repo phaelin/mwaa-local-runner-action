@@ -34,25 +34,25 @@ runs:
         path: aws-mwaa-local-runner
 
     - name: Pull docker images
-      if: inputs.up == true
+      if: inputs.up == 'true'
       shell: bash
       run: |
         docker pull ghcr.io/phaelin/mwaa-local-runner-action:main
         docker tag phaelin/mwaa-local-runner-action:main amazon/mwaa-local:2_7
 
     - name: Run docker-compose up
-      if: inputs.up == true
+      if: inputs.up == 'true'
       shell: bash
       working-directory: aws-mwaa-local-runner/docker/
       run: docker-compose -f ./docker-compose-local.yml up -d
 
     - name: Run docker-compose down
-      if: inputs.down == true
+      if: inputs.down == 'true'
       shell: bash
       run: docker-compose down
 
     - name: Run docker-compose exec
-      if: inputs.exec == true
+      if: inputs.exec == 'true'
       shell: bash
       run: |
         docker-compose exec -T local-runner bash -c '${{ inputs.exec-command }}'' >> $GITHUB_STEP_SUMMARY
