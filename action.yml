@@ -68,7 +68,7 @@ runs:
       working-directory: aws-mwaa-local-runner/docker/
       run: |
         service=$(docker-compose -f ./docker-compose-local.yml ps -q local-runner)
-        echo "airflow-endpoint=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $service):8080" >> $GITHUB_OUTPUT
+        echo "airflow-endpoint=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $service):8080" >> "$GITHUB_OUTPUT"
 
     - name: Run docker-compose down
       if: inputs.down == 'true'
