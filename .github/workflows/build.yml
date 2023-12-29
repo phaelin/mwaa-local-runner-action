@@ -1,6 +1,7 @@
 name: Build and publish MWAA local runner image to GHCR
 
 on:
+  release:
   push:
     branches: 
       - main
