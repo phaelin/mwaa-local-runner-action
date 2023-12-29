@@ -62,7 +62,7 @@ runs:
       if: inputs.down == 'true'
       shell: bash
       working-directory: aws-mwaa-local-runner/docker/
-      run: docker-compose -f ./docker-compose-local.ymldown
+      run: docker-compose -f ./docker-compose-local.yml down
 
     - name: Run docker-compose exec
       if: inputs.exec == 'true'
