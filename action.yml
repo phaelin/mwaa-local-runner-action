@@ -50,6 +50,6 @@ runs:
     - name: Run docker-compose exec
       if: inputs.exec == true
       shell: bash
-      run: docker-compose exec -T airflow ${{ inputs.exec-command }}
+      run: docker-compose exec -T airflow bash -c '${{ inputs.exec-command }}''
 
 
