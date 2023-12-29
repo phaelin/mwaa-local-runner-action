@@ -20,6 +20,9 @@ inputs:
     description: 'command to run in docker-compose exec'
     required: false
     default: 'airflow'
+  repo-token:
+    description: 'token for the repo'
+    required: true
 
 # Define your outputs here.
 # outputs:
@@ -38,7 +41,7 @@ runs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ inputs.repo-token }}
 
     - name: Pull docker images
       if: inputs.up == 'true'
