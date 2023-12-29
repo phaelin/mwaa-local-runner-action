@@ -8,12 +8,11 @@ inputs:
     description: 'whether to run docker-compose up'
     required: false
     default: 'false'
-  # down: tear down docker-compose env
   down:
     description: 'whether to run docker-compose down'
     required: false
     default: 'false'
-  exec: # this one needs to be able to execute whatever dbt stuff they have
+  exec:
     description: 'whether to run docker-compose exec'
     required: false
     default: 'false'
@@ -33,6 +32,12 @@ runs:
       with:
         repository: aws/aws-mwaa-local-runner
         path: aws-mwaa-local-runner
+    - name: Pull docker images
+      if: inputs.up == true
+      shell: bash
+      run: |
+        docker pull ghcr.io/phaelin/mwaa-local-runner-action:main
+        docker tag phaelin/mwaa-local-runner-action:main amazon/mwaa-local:2_7
     - name: Run docker-compose up
       if: inputs.up == true
       shell: bash
